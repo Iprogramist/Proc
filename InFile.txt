@@ -1,0 +1,12 @@
+avtobus
+3
+4
+gruzovik
+4
+5
+gruzovik
+5
+6
+avtobus
+5
+5
