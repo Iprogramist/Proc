@@ -74,7 +74,7 @@ void OutList(List **b, ofstream &ofst)        // в док
 	while (p)
 	{
 		ofst << i << ": ";
-		OutCar(&(p)->a, ofst);     /////// p->a € разъименовываю и отправл€ю значение переменной 
+		OutCar(&(p)->a, ofst);     
 		p = p->next;
 		i++;
 	}
