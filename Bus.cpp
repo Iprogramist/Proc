@@ -13,3 +13,4 @@ void OutBus(Bus &bs, ofstream &ofst)
 {
 	ofst << " Вместимость пассажиров: " << bs.capacity << endl;
 }
+
