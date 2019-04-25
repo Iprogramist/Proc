@@ -4,10 +4,11 @@
 
 #include "Gruz.h"
 #include "Bus.h"
+#include "Leg.h"
 
 struct Cars
 {
-	enum key { GRUZOV=1 , BUS };
+	enum key { GRUZOV=1 , BUS, LEGKOV };
 	key key;
 	int power;
 	float exp;
@@ -15,6 +16,7 @@ struct Cars
 	{		
 		Gruz gruzovik;
 		Bus avtobus;
+		Leg legkovaya;
 	};
 };
 

@@ -14,3 +14,7 @@ avtobus
 5
 7,5
 5
+legkovaya
+3
+2
+6
