@@ -1,11 +1,13 @@
 #include "Car.h"
 #include "List.h"
 #include <fstream>
+#include <iostream>
 
 using namespace std;
 
 void OutCar(Cars* a, ofstream &ofst);
 Cars* InCar(ifstream &ifst);
+bool Compare(Cars *first, Cars *second);
 
 void Init(List **begin)        //////// инициализация 
 {
@@ -75,5 +77,48 @@ void OutList(List **b, ofstream &ofst)        // в док
 		OutCar(&(p)->a, ofst);     /////// p->a я разъименовываю и отправляю значение переменной 
 		p = p->next;
 		i++;
+	}
+}
+
+
+void Sort(List **begin)
+{
+	char p;
+	bool proverka;
+	cout << "\nКак отсортировать? По возрастанию (>) или убыванию (<): ";
+	cin >> p;
+	switch (p)
+	{
+	case '>':
+	{
+		proverka = 0;
+		break;
+	}
+
+	case '<':
+	{
+		proverka = 1;
+		break;
+	}
+	default:
+	{
+		cout << "Ошибка!" << endl;
+	}
+	}
+	Cars t3;
+	List* t1;
+	List * t2;
+
+	for (t1 = (*begin); t1; t1 = t1->next)
+	{
+		for (t2 = (*begin); t2; t2 = t2->next)
+		{
+			if (Compare(&t1->a, &t2->a) - proverka)
+			{
+				t3 = t1->a;
+				t1->a = t2->a;
+				t2->a = t3;
+			}
+		}
 	}
 }
