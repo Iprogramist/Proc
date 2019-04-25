@@ -10,3 +10,6 @@ gruzovik
 avtobus
 5
 5
+legkovaya
+3
+2
