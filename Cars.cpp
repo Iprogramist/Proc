@@ -105,4 +105,5 @@ void OutCar(Cars* a, ofstream &ofst)        // â äîê
 	default:
 		ofst << "Îøèáêà!" << endl;
 	}
+
 }
