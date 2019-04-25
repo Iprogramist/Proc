@@ -11,5 +11,6 @@ void readBus(Bus &bs, ifstream &ifst)
 
 void OutBus(Bus &bs, ofstream &ofst)
 {
-	ofst << " Вместимость пассажиров автобуса: " << bs.capacity << endl;
+	ofst << " Вместимость пассажиров: " << bs.capacity << endl;
 }
+

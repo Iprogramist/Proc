@@ -1,20 +1,22 @@
 #include "Car.h"
 #include "List.h"
 #include <fstream>
+#include <iostream>
 
 using namespace std;
 
 void OutCar(Cars* a, ofstream &ofst);
 Cars* InCar(ifstream &ifst);
+bool Compare(Cars *first, Cars *second);
 
-void Init(List **begin)        //////// инициализация 
+void Init(List **begin)        //////// ГЁГ­ГЁГ¶ГЁГ Г«ГЁГ§Г Г¶ГЁГї 
 {
 	*begin = NULL;
 	*begin = new List;
 	(*begin)->next = NULL;
 }
 
-void Free(List **begin, ofstream &ofst)       /////  освобождаем память (для этого начало передаем)
+void Free(List **begin, ofstream &ofst)       /////  Г®Г±ГўГ®ГЎГ®Г¦Г¤Г ГҐГ¬ ГЇГ Г¬ГїГІГј (Г¤Г«Гї ГЅГІГ®ГЈГ® Г­Г Г·Г Г«Г® ГЇГҐГ°ГҐГ¤Г ГҐГ¬)
 {
 	if (*begin == 0)
 		return;
@@ -28,10 +30,10 @@ void Free(List **begin, ofstream &ofst)       /////  освобождаем память (для это
 		delete t;
 	}
 	*begin = NULL;
-	ofst << "Контейнер освобожден!" << endl;
+	ofst << "ГЉГ®Г­ГІГҐГ©Г­ГҐГ° Г®Г±ГўГ®ГЎГ®Г¦Г¤ГҐГ­!" << endl;
 }
 
-void InList(List **begin, ifstream &ifst)    /////// или же    
+void InList(List **begin, ifstream &ifst)    /////// ГЁГ«ГЁ Г¦ГҐ    
 {
 	int kol = 0;
 	List *end = *begin;
@@ -40,14 +42,14 @@ void InList(List **begin, ifstream &ifst)    /////// или же
 	{
 		if (kol == 0)
 		{
-			(*begin)->a = (*InCar(ifst));   // который считывает первую цифру
+			(*begin)->a = (*InCar(ifst));   // ГЄГ®ГІГ®Г°Г»Г© Г±Г·ГЁГІГ»ГўГ ГҐГІ ГЇГҐГ°ГўГіГѕ Г¶ГЁГґГ°Гі
 			(*begin)->next = NULL;
 			kol++;
 		}
 		else
 		{
-			end->next = new List; // указатель выделяет память под новый эл
-			end = end->next;  // и авняется след эл 
+			end->next = new List; // ГіГЄГ Г§Г ГІГҐГ«Гј ГўГ»Г¤ГҐГ«ГїГҐГІ ГЇГ Г¬ГїГІГј ГЇГ®Г¤ Г­Г®ГўГ»Г© ГЅГ«
+			end = end->next;  // ГЁ Г ГўГ­ГїГҐГІГ±Гї Г±Г«ГҐГ¤ ГЅГ« 
 			end->a = (*InCar(ifst));
 			end->next = NULL;
 			kol++;
@@ -56,7 +58,7 @@ void InList(List **begin, ifstream &ifst)    /////// или же
 }
 
 
-void OutList(List **b, ofstream &ofst)        // в док
+void OutList(List **b, ofstream &ofst)        // Гў Г¤Г®ГЄ
 {
 	List *p = *b;
 	int i = 1;
@@ -67,13 +69,55 @@ void OutList(List **b, ofstream &ofst)        // в док
 		p = p->next;
 	}
 	p = *b;
-	ofst << "Контейнер заполнен! " << endl;
-	ofst << "Колличество Автомобилей: " << kol << endl;
+	ofst << "ГЉГ®Г­ГІГҐГ©Г­ГҐГ° Г§Г ГЇГ®Г«Г­ГҐГ­! " << endl;
+	ofst << "ГЉГ®Г«Г«ГЁГ·ГҐГ±ГІГўГ® ГЂГўГІГ®Г¬Г®ГЎГЁГ«ГҐГ©: " << kol << endl;
 	while (p)
 	{
 		ofst << i << ": ";
-		OutCar(&(p)->a, ofst);     /////// p->a я разъименовываю и отправляю значение переменной 
+		OutCar(&(p)->a, ofst);     
 		p = p->next;
 		i++;
+	}
+}
+
+void Sort(List **begin)
+{
+	char p;
+	bool proverka;
+	cout << "\nГЉГ ГЄ Г®ГІГ±Г®Г°ГІГЁГ°Г®ГўГ ГІГј? ГЏГ® ГўГ®Г§Г°Г Г±ГІГ Г­ГЁГѕ (>) ГЁГ«ГЁ ГіГЎГ»ГўГ Г­ГЁГѕ (<): ";
+	cin >> p;
+	switch (p)
+	{
+	case '>':
+	{
+		proverka = 0;
+		break;
+	}
+
+	case '<':
+	{
+		proverka = 1;
+		break;
+	}
+	default:
+	{
+		cout << "ГЋГёГЁГЎГЄГ !" << endl;
+	}
+	}
+	Cars t3;
+	List* t1;
+	List * t2;
+
+	for (t1 = (*begin); t1; t1 = t1->next)
+	{
+		for (t2 = (*begin); t2; t2 = t2->next)
+		{
+			if (Compare(&t1->a, &t2->a) - proverka)
+			{
+				t3 = t1->a;
+				t1->a = t2->a;
+				t2->a = t3;
+			}
+		}
 	}
 }
