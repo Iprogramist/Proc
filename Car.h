@@ -10,6 +10,7 @@ struct Cars
 	enum key { GRUZOV=1 , BUS };
 	key key;
 	int power;
+	float exp;
 	union
 	{		
 		Gruz gruzovik;

@@ -34,6 +34,9 @@ Cars* InCar(ifstream &ifst)
 	ifst.getline(str, 10, '\n');
 	avto->power = atoi(str);
 
+	ifst.getline(str, 10, '\n');
+	avto->exp = atof(str);
+
 	switch (key)   
 	{
 	case 1:
@@ -54,6 +57,7 @@ void OutCar(Cars* a, ofstream &ofst)
 {
 
 	ofst << "Кол-во лошадинных сил: " << a->power << ' ';
+	ofst << "Расход: " << a->exp << ' ';
 	switch (a->key)
 	{
 	case Cars::key::GRUZOV:OutGruz(a->gruzovik, ofst);
