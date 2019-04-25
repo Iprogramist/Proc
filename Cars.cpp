@@ -17,31 +17,26 @@ void readGruz(Gruz &gr, ifstream &ifst);
 void OutGruz(Gruz &gr, ofstream &ofst);
 void OutLeg(Leg &lg, ofstream &ofst);
 void readLeg(Leg &lg, ifstream &ifst);
-
 float RatioCar(Cars *a, int k);
 
 
-
-float RatioCar(Cars *a,int k)
+float RatioCar(Cars *a, int k)
 {
 	float m;
 	if (k == 2)
 	{
 		m = (float(a->avtobus.capacity) * float(75)) / float(a->power);
 	}
-	else if (k==1)
+	else if (k == 1)
 	{
-		m =(float(a->gruzovik.mas) / float(a->power));
+		m = (float(a->gruzovik.mas) / float(a->power));
 	}
-  else if (k==3)
+	else if (k == 3)
 	{
-		m =(float(75) / float(a->power));
+		m = (float(75) / float(a->power));
 	}
 	return m;
 }
-
-
-
 
 Cars* InCar(ifstream &ifst)
 {
@@ -49,7 +44,6 @@ Cars* InCar(ifstream &ifst)
 	char od[] = "gruzovik";
 	char dv[] = "avtobus";
 	char lg[] = "legkovaya";
-
 	char prov[10];
 	ifst.getline(prov, 10, '\n');
 	int key = 3;
@@ -69,6 +63,9 @@ Cars* InCar(ifstream &ifst)
 	char str[10];
 	ifst.getline(str, 10, '\n');
 	avto->power = atoi(str);
+
+	ifst.getline(str, 10, '\n');
+	avto->exp = atof(str);
 
 	switch (key)  
 	{
@@ -90,10 +87,11 @@ Cars* InCar(ifstream &ifst)
 
 }
 
-void OutCar(Cars* a, ofstream &ofst)        // Ã¢ Ã¤Ã®Ãª
+void OutCar(Cars* a, ofstream &ofst)        // â äîê
 {
-	ofst << "ÃŠÃ®Ã«-Ã¢Ã® Ã«Ã®Ã¸Ã Ã¤Ã¨Ã­Ã­Ã»Ãµ Ã±Ã¨Ã«: " << a->power << ' ' << "ÃŽÃ²Ã­Ã®Ã¸Ã¥Ã­Ã¨Ã¥ Ã¢Ã¥Ã±Ã  Ãª Ã¬Ã®Ã¹Ã­Ã®Ã±Ã²Ã¨: " << RatioCar(a, a->key) << ' ';
-	ofst << "ÃŠÃ®Ã«-Ã¢Ã® Ã«Ã®Ã¸Ã Ã¤Ã¨Ã­Ã»Ãµ Ã±Ã¨Ã«: " << a->power << ' ';
+
+	ofst << "Êîë-âî ëîøàäèííûõ ñèë: " << a->power << ' ' << "Îòíîøåíèå âåñà ê ìîùíîñòè: " << RatioCar(a, a->key) << ' ';
+	ofst << "Ðàñõîä: " << a->exp << ' ';
 	switch (a->key)
 	{
 	case Cars::key::GRUZOV:OutGruz(a->gruzovik, ofst);
@@ -103,7 +101,6 @@ void OutCar(Cars* a, ofstream &ofst)        // Ã¢ Ã¤Ã®Ãª
 	case Cars::key::LEGKOV:OutLeg(a->legkovaya, ofst);
 		break;
 	default:
-		ofst << "ÃŽÃ¸Ã¨Ã¡ÃªÃ !" << endl;
+		ofst << "Îøèáêà!" << endl;
 	}
-
 }

@@ -17,4 +17,4 @@ avtobus
 legkovaya
 3
 2
-6
+5
