@@ -3,22 +3,25 @@
 #include "Car.h"
 
 using namespace std;
-
-void OutCar(Cars* a, ofstream &ofst);
+void OutCar(Cars* car, ofstream &ofst);
 
 void OnlyGruz(List **begin, ofstream &ofst)
 {
-	List *a = (*begin);
+	List *list = (*begin);
 	int i = 1;
 	ofst << "Только Грузовики!" << endl;
-	while (a)
+	while (list)
 	{
 		ofst << i << ": ";
-		if (a->a.key == Cars::GRUZOV)
-			OutCar(&(a)->a, ofst);
+		if (list->car.key == Cars::GRUZOV)
+		{
+			OutCar(&(list)->car, ofst);
+		}
 		else
+		{ 
 			ofst << "- " << endl;
-		a = a->next;
+		}
+		list = list->next;
 		i++;
 	}
 }

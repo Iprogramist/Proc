@@ -3,11 +3,9 @@
 #include "List.h"
 
 using namespace std;
+float RatioCar(Cars *car, int key);
 
-float RatioCar(Cars *a, int k);
-
-
-bool Compare(Cars *first, Cars *second)
-	{
-		return RatioCar(first, first->key) < RatioCar(second, second->key);
-	}
+bool Compare(Cars *firstCar, Cars *secondCar)
+{
+	return RatioCar(firstCar, firstCar->key) < RatioCar(secondCar, secondCar->key);
+}

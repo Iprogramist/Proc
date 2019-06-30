@@ -6,104 +6,117 @@
 #include "Gruz.h"
 #include "Leg.h"
 #include <fstream>
-
+#include <iostream>
 
 using namespace std;
-
-
 void OutBus(Bus &bs, ofstream &ofst);
-void readBus(Bus &bs, ifstream &ifst);
-void readGruz(Gruz &gr, ifstream &ifst);
+void ReadBus(Bus &bs, ifstream &ifst);
+void ReadGruz(Gruz &gr, ifstream &ifst);
 void OutGruz(Gruz &gr, ofstream &ofst);
 void OutLeg(Leg &lg, ofstream &ofst);
-void readLeg(Leg &lg, ifstream &ifst);
+void ReadLeg(Leg &lg, ifstream &ifst);
+float RatioCar(Cars *car, int key);
 
-float RatioCar(Cars *a, int k);
-
-
-
-float RatioCar(Cars *a,int k)
+float RatioCar(Cars *car, int key)
 {
-	float m;
-	if (k == 2)
+	float ratio;
+	if (key == 2)
 	{
-		m = (float(a->avtobus.capacity) * float(75)) / float(a->power);
+		ratio = (float(car->avtobus.capacity) * float(75)) / float(car->power);
 	}
-	else if (k==1)
+	else if (key == 1)
 	{
-		m =(float(a->gruzovik.mas) / float(a->power));
+		ratio = (float(car->gruzovik.mas) / float(car->power));
 	}
-  else if (k==3)
+	else if (key == 3)
 	{
-		m =(float(75) / float(a->power));
+		ratio = (float(75) / float(car->power));
 	}
-	return m;
+	return ratio;
 }
-
-
-
 
 Cars* InCar(ifstream &ifst)
 {
-	Cars *avto = new Cars;
-	char od[] = "gruzovik";
-	char dv[] = "avtobus";
+	Cars *ca = new Cars;
+	char gr[] = "gruzovik";
+	char av[] = "avtobus";
 	char lg[] = "legkovaya";
-
-	char prov[10];
-	ifst.getline(prov, 10, '\n');
+	char check[10];
+	ifst.getline(check, 10, '\n');
+	if (_stricmp(gr, check) != 0 and _stricmp(av, check) != 0 and _stricmp(lg, check) != 0)
+	{
+		cout << "Введен Неверный формат автомобиля!" << endl;
+		system("pause");
+	}
 	int key = 3;
-	if (_stricmp(od, prov) == 0)
+	if (_stricmp(gr, check) == 0)
 	{
 		key = 1;
 	}
-	if (_stricmp(dv, prov) == 0 )
+	if (_stricmp(av, check) == 0 )
 	{
 		key = 2;
 	}
-	if (_stricmp(lg, prov) == 0)
+	if (_stricmp(lg, check) == 0)
 	{
 		key = 3;
 	}
 	
 	char str[10];
 	ifst.getline(str, 10, '\n');
-	avto->power = atoi(str);
+	ca->power = atoi(str);
+	if (ifst.fail()) {
+		cout << "Неверный формат!" << endl;
+		system("pause");
+	}
+	else if (ca->power <= 0) {
+		cout << "Мощность должна быть больше нуля!" << endl;
+		system("pause");
+	}
+
+	ifst.getline(str, 10, '\n');
+	ca->exp = atof(str);
+	if (ifst.fail()) {
+		cout << "Неверный формат!" << endl;
+		system("pause");
+	}
+	else if (ca->exp <= 0) {
+		cout << "Расход должен быть больше нуля!" << endl;
+		system("pause");
+	}
 
 	switch (key)  
 	{
 	case 1:
-		avto->key = Cars::key::GRUZOV;
-		readGruz(avto->gruzovik, ifst);  
-		return avto; 
+		ca->key = Cars::key::GRUZOV;
+		ReadGruz(ca->gruzovik, ifst);  
+		return ca; 
 	case 2:
-		avto->key = Cars::key::BUS;
-		readBus(avto->avtobus, ifst);
-		return avto;
+		ca->key = Cars::key::BUS;
+		ReadBus(ca->avtobus, ifst);
+		return ca;
 	case 3:
-		avto->key = Cars::key::LEGKOV;
-		readLeg(avto->legkovaya, ifst);
-		return avto;
+		ca->key = Cars::key::LEGKOV;
+		ReadLeg(ca->legkovaya, ifst);
+		return ca;
 	default:    
 		exit;
 	}
-
 }
 
-void OutCar(Cars* a, ofstream &ofst)        // Гў Г¤Г®ГЄ
+void OutCar(Cars* car, ofstream &ofst)       
 {
-	ofst << "ГЉГ®Г«-ГўГ® Г«Г®ГёГ Г¤ГЁГ­Г­Г»Гµ Г±ГЁГ«: " << a->power << ' ' << "ГЋГІГ­Г®ГёГҐГ­ГЁГҐ ГўГҐГ±Г  ГЄ Г¬Г®Г№Г­Г®Г±ГІГЁ: " << RatioCar(a, a->key) << ' ';
-	ofst << "ГЉГ®Г«-ГўГ® Г«Г®ГёГ Г¤ГЁГ­Г»Гµ Г±ГЁГ«: " << a->power << ' ';
-	switch (a->key)
+	ofst << "Кол-во лошадинных сил: " << car->power << ' ' << "Отношение веса к мощности: " << RatioCar(car, car->key) << ' ';
+	ofst << "Расход: " << car->exp << ' ';
+	switch (car->key)
 	{
-	case Cars::key::GRUZOV:OutGruz(a->gruzovik, ofst);
+	case Cars::key::GRUZOV:OutGruz(car->gruzovik, ofst);
 		break;
-	case Cars::key::BUS:OutBus(a->avtobus, ofst);
+	case Cars::key::BUS:OutBus(car->avtobus, ofst);
 		break;
-	case Cars::key::LEGKOV:OutLeg(a->legkovaya, ofst);
+	case Cars::key::LEGKOV:OutLeg(car->legkovaya, ofst);
 		break;
 	default:
-		ofst << "ГЋГёГЁГЎГЄГ !" << endl;
+		ofst << "Ошибка!" << endl;
 	}
-
 }
