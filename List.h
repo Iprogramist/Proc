@@ -6,7 +6,7 @@
 	
 	struct List
 	{
-		Cars a;
+		Cars car;
 		List* next;
 	};
 
