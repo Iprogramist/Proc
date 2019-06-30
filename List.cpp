@@ -1,34 +1,31 @@
 #include "Car.h"
 #include "List.h"
 #include <fstream>
-#include <iostream>
 
 using namespace std;
-void OutCar(Cars* car, ofstream &ofst);
-Cars* InCar(ifstream &ifst);
-bool Compare(Cars *firstCar, Cars *secondCar);
 
-void Init(List **begin)        
+void OutCar(Cars* a, ofstream &ofst);
+Cars* InCar(ifstream &ifst);
+
+void Init(List **begin)        //////// инициализация 
 {
 	*begin = NULL;
 	*begin = new List;
 	(*begin)->next = NULL;
 }
 
-void Free(List **begin, ofstream &ofst)    
+void Free(List **begin, ofstream &ofst)       /////  освобождаем память (для этого начало передаем)
 {
 	if (*begin == 0)
-	{
 		return;
-	}
-	List *list = *begin;
-	List *tmp;
+	List *p = *begin;
+	List *t;
 
-	while (list)
+	while (p)
 	{
-		tmp = list;
-		list = list->next;
-		delete tmp;
+		t = p;
+		p = p->next;
+		delete t;
 	}
 	*begin = NULL;
 	ofst << "Контейнер освобожден!" << endl;
@@ -36,92 +33,47 @@ void Free(List **begin, ofstream &ofst)
 
 void InList(List **begin, ifstream &ifst)    /////// или же    
 {
-	int count = 0;
+	int kol = 0;
 	List *end = *begin;
 
 	while (!ifst.eof())
 	{
-		if (count == 0)
+		if (kol == 0)
 		{
-			(*begin)->car = (*InCar(ifst));   // который считывает первую цифру
+			(*begin)->a = (*InCar(ifst));   // который считывает первую цифру
 			(*begin)->next = NULL;
-			count++;
+			kol++;
 		}
 		else
 		{
 			end->next = new List; // указатель выделяет память под новый эл
 			end = end->next;  // и авняется след эл 
-			end->car = (*InCar(ifst));
+			end->a = (*InCar(ifst));
 			end->next = NULL;
-			count++;
+			kol++;
 		}
 	}
 }
 
-void OutList(List **ls, ofstream &ofst)        // в док
+
+void OutList(List **b, ofstream &ofst)        // в док
 {
-	List *list = *ls;
+	List *p = *b;
 	int i = 1;
-	int  count = 0;
-	while (list)
+	int  kol = 0;
+	while (p)
 	{
-		count++;
-		list = list->next;
+		kol++;
+		p = p->next;
 	}
-	list = *ls;
+	p = *b;
 	ofst << "Контейнер заполнен! " << endl;
-	ofst << "Колличество Автомобилей: " << count << endl;
-	while (list)
+	ofst << "Колличество Автомобилей: " << kol << endl;
+	while (p)
 	{
 		ofst << i << ": ";
-		OutCar(&(list)->car, ofst);     /////// p->a я разъименовываю и отправляю значение переменной 
-		list = list->next;
+		OutCar(&(p)->a, ofst);     /////// p->a я разъименовываю и отправляю значение переменной 
+		p = p->next;
 		i++;
-	}
-}
-
-void Sort(List **begin)
-{
-	char signOfCompare;
-	bool check;
-	cout << "\nКак отсортировать? По возрастанию (>) или убыванию (<): ";
-	cin >> signOfCompare;
-	while (signOfCompare != '<' and signOfCompare != '>')
-	{
-		cout << "\nОшибка ввода, введите < или >: ";
-		cin >> signOfCompare;
-	}
-	switch (signOfCompare)
-	{
-		case '>':
-		{
-			check = 0;
-			break;
-		}
-		case '<':
-		{
-			check = 1;
-			break;
-		}
-		default:
-		{
-			cout << "Ошибка!" << endl;
-		}
-	}
-	Cars tmpCar;
-	List* tmp1;
-	List * tmp2;
-
-	for (tmp1 = (*begin); tmp1; tmp1 = tmp1->next)
-	{
-		for (tmp2 = (*begin); tmp2; tmp2 = tmp2->next)
-		{
-			if (Compare(&tmp1->car, &tmp2->car) - check)
-			{
-				tmpCar = tmp1->car;
-				tmp1->car = tmp2->car;
-				tmp2->car = tmpCar;
-			}
-		}
 	}
 }
